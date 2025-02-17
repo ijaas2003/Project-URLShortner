@@ -1,26 +1,26 @@
 package com.urlshitt.shit.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.urlshitt.shit.CatchResponses;
 import com.urlshitt.shit.cache.URLCaching;
 import com.urlshitt.shit.models.URLPojo;
-import com.urlshitt.shit.CatchResponses;
+
+@Component
 public class PersistanceExecuter {
   
-  DataAccessLayer dataAccessLayer;
-  URLCaching urlCaching;
-  
+  private final DataAccessLayer dataAccessLayer;
+  private final URLCaching urlCaching;
+
   @Autowired
-  public PersistanceExecuter(DataAccessLayer dataAccessLayer) {
+  public PersistanceExecuter(DataAccessLayer dataAccessLayer, URLCaching urlCaching) {
     this.dataAccessLayer = dataAccessLayer;
+    this.urlCaching = urlCaching;
   }
   
-  public boolean verifyUrlExistInDB(Long urlId) {
-    String isExist = urlCaching.get(urlId.toString());
-    if (isExist.equals(CatchResponses.CACHE_NOT_FOUND)) {
-      return dataAccessLayer.existsById(urlId);
-    }
-    return false;
+  public boolean verifyUrlExistInDB(String url) {
+    return dataAccessLayer.existsByUrl(url);
   }
 
   public boolean storeUrl(URLPojo urlPojo) {

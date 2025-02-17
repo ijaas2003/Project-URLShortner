@@ -2,20 +2,22 @@ package com.urlshitt.shit.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "urlpojo")
 public class URLPojo {
 
   @Id
-  private Long urlId;
+  private Long url_id;
   private String userName;
   private String email;
   private String tinyURL;
   private String url;
-  private String userId;
+  private String user_id;
 
   public Long getUrlId() {
-    return this.urlId;
+    return this.url_id;
   }
   public String getTinyURL() {
     return this.tinyURL;
@@ -30,12 +32,12 @@ public class URLPojo {
     return this.url;
   }
   public String getUserId() {
-    return this.userId;
+    return this.user_id;
   }
   
 
     public void setUrlId(Long urlId){
-      this.urlId = urlId;
+      this.url_id = urlId;
     }
     public void settinyURL(String tinyURL){
       this.tinyURL = tinyURL;
@@ -50,17 +52,17 @@ public class URLPojo {
       this.url = url;
     }
     public void setUserId(String userId) {
-      this.url = userId;
+      this.user_id = userId;
     }
   @Override
   public String toString() {
     return "URLPojo{" +
-    "urlId=" + urlId +
+    "urlId=" + url_id +
     ",userName='" + userName + '\'' +
     ", email='" + email + '\'' +
     ", tinyURL='" + tinyURL + '\'' +
     ", url='" + url + '\'' +
-    ", userId'" + userId + '\'' +
+    ", userId'" + user_id + '\'' +
     '}';
   }
 }
