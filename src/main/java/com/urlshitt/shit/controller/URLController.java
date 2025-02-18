@@ -31,17 +31,21 @@ public class URLController {
   //   return new ResponseEntity<>(urlService.getUrls(), HttpStatus.OK);
   // }
   @GetMapping("/shorturl/{id}")
-  public void getOriginalUrl(@PathVariable("id") String urlId, HttpServletResponse httpServletResponse) {
+  public ResponseEntity<Response> getOriginalUrl(@PathVariable("id") String urlId, HttpServletResponse httpServletResponse) {
     try {
+      Response res = new Response();
       String originalUrl = urlService.getOriginalUrl(urlId);
       if (originalUrl == null) {
-        httpServletResponse.sendRedirect("/error");
+        res.setName("message");
+        res.setMessage("There is no Url like that");
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
       }
       httpServletResponse.sendRedirect(originalUrl);
+      return new ResponseEntity<>(res, HttpStatus.OK);
     } catch (Exception e) {
 
     }
-    
+    return null;
   }
   @PostMapping("/url")
   public ResponseEntity<Response> newURL(@RequestBody URLPojo newUrl) {

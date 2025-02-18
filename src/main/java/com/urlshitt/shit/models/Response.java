@@ -1,7 +1,7 @@
 package com.urlshitt.shit.models;
 public class Response {
-  private String name;
-  private String message;
+  private String name = "messagr";
+  private String message = "success";
   public void setName(String name) {
     this.name = name;
   }

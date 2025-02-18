@@ -27,4 +27,15 @@ public class URLCaching {
       return CatchResponses.CACHE_POST_ERROR;
     }
   }
+
+  public String getUrl(String urlId) {
+    try {
+      String url = jedis.get(urlId);
+      if (url != null) {
+        return url;
+      }
+    } catch (Exception e) {
+    }
+    return null;
+  }
 }

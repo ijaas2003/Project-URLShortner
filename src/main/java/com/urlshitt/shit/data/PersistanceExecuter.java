@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.urlshitt.shit.CatchResponses;
-import com.urlshitt.shit.cache.URLCaching;
 import com.urlshitt.shit.models.URLPojo;
 import com.urlshitt.shit.models.URlMapping;
 
@@ -15,12 +13,10 @@ public class PersistanceExecuter {
   
   private final DataAccessLayer dataAccessLayer;
   private final Mapping mapping;
-  private final URLCaching urlCaching;
 
   @Autowired
-  public PersistanceExecuter(DataAccessLayer dataAccessLayer, URLCaching urlCaching, Mapping mapping) {
+  public PersistanceExecuter(DataAccessLayer dataAccessLayer, Mapping mapping) {
     this.dataAccessLayer = dataAccessLayer;
-    this.urlCaching = urlCaching;
     this.mapping = mapping;
   }
   
@@ -36,5 +32,8 @@ public class PersistanceExecuter {
   }
   public Optional<URlMapping> getURlMapping(String url) {
     return mapping.findById(url);
+  }
+  public Optional<URLPojo> getUrl(Long urlId) {
+    return dataAccessLayer.findById(urlId);
   }
 }

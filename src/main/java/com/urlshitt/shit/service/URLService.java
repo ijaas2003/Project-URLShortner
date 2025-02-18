@@ -36,36 +36,51 @@ public class URLService {
       Response res = new Response();
       URlMapping mapping = new URlMapping();
       utils.setUpdatedPojo(newUrlPojo, mapping);
-      persistanceExecuter.storeMapping(mapping);
-      System.out.println("Generatedid " + newUrlPojo.getUrlId());
       boolean isUrlExist = persistanceExecuter.verifyUrlExistInDB(newUrlPojo.getUrl());
-
       if (isUrlExist) {
         res.setName("message");
         res.setMessage("alreadyExist");
         return res;
       }
+      persistanceExecuter.storeMapping(mapping);
+      System.out.println("Generatedid " + newUrlPojo.getUrlId());
+
 
       catching.post(newUrlPojo.getUrlId().toString(), objectMapper.writeValueAsString(newUrlPojo));
       persistanceExecuter.storeUrl(newUrlPojo);
 
       res.setName("success");
-      res.setMessage(newUrlPojo.getUrl());
+      res.setMessage(newUrlPojo.getTinyURL());
       return res;
     }catch (JSONException e) {
     }catch (Exception e) {
     }
     return null;
   }
+
   public String getOriginalUrl (String url) {
-    String originalUrl;
-    Optional<URlMapping> URLmappingPojo = persistanceExecuter.getURlMapping(url);
-    if (URLmappingPojo.isEmpty()) {
-      return null;
+    try {
+      String urlId;
+      Optional<URlMapping> URLmappingPojo = persistanceExecuter.getURlMapping(url);
+      if (URLmappingPojo.isEmpty()) {
+        return null;
+      }
+      else if (URLmappingPojo.isPresent()) {
+        urlId  = URLmappingPojo.get().geturlId();
+        String isUrlInCache = catching.getUrl(urlId);
+        if (isUrlInCache != null) {
+          return objectMapper.readValue(isUrlInCache, URLPojo.class).getUrl();
+        }
+        Optional<URLPojo> urlPojo = persistanceExecuter.getUrl(Long.parseLong(urlId));
+        if (urlPojo.isPresent()) {
+          return urlPojo.get().getUrl();
+        }
+      }
+    } catch (Exception E) {
+      System.out.println(E.getMessage());
     }
-    else if (URLmappingPojo.isPresent()) {
-      originalUrl  = URLmappingPojo.get().geturlId();
-    }
+    
+    return null;
   }
   public URLPojo getUrl(Long urlId) {
     if (urlId == null) return null;
