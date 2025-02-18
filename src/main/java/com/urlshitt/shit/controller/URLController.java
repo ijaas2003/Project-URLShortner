@@ -13,6 +13,8 @@ import com.urlshitt.shit.models.Response;
 import com.urlshitt.shit.models.URLPojo;
 import com.urlshitt.shit.service.URLService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +30,19 @@ public class URLController {
   // public ResponseEntity<List<URLPojo>> findAll() {
   //   return new ResponseEntity<>(urlService.getUrls(), HttpStatus.OK);
   // }
+  @GetMapping("/shorturl/{id}")
+  public void getOriginalUrl(@PathVariable("id") String urlId, HttpServletResponse httpServletResponse) {
+    try {
+      String originalUrl = urlService.getOriginalUrl(urlId);
+      if (originalUrl == null) {
+        httpServletResponse.sendRedirect("/error");
+      }
+      httpServletResponse.sendRedirect(originalUrl);
+    } catch (Exception e) {
 
+    }
+    
+  }
   @PostMapping("/url")
   public ResponseEntity<Response> newURL(@RequestBody URLPojo newUrl) {
   Response response = urlService.createNewURL(newUrl);

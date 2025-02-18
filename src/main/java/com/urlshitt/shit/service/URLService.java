@@ -1,5 +1,7 @@
 package com.urlshitt.shit.service;
 
+import java.util.Optional;
+
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.urlshitt.shit.cache.URLCaching;
 import com.urlshitt.shit.data.PersistanceExecuter;
 import com.urlshitt.shit.models.Response;
 import com.urlshitt.shit.models.URLPojo;
+import com.urlshitt.shit.models.URlMapping;
 import com.urlshitt.shit.utils.Utils;
 
 @Service
@@ -31,7 +34,9 @@ public class URLService {
   public Response createNewURL(URLPojo newUrlPojo) {
     try {
       Response res = new Response();
-      utils.setUpdatedPojo(newUrlPojo);
+      URlMapping mapping = new URlMapping();
+      utils.setUpdatedPojo(newUrlPojo, mapping);
+      persistanceExecuter.storeMapping(mapping);
       System.out.println("Generatedid " + newUrlPojo.getUrlId());
       boolean isUrlExist = persistanceExecuter.verifyUrlExistInDB(newUrlPojo.getUrl());
 
@@ -52,7 +57,16 @@ public class URLService {
     }
     return null;
   }
-
+  public String getOriginalUrl (String url) {
+    String originalUrl;
+    Optional<URlMapping> URLmappingPojo = persistanceExecuter.getURlMapping(url);
+    if (URLmappingPojo.isEmpty()) {
+      return null;
+    }
+    else if (URLmappingPojo.isPresent()) {
+      originalUrl  = URLmappingPojo.get().geturlId();
+    }
+  }
   public URLPojo getUrl(Long urlId) {
     if (urlId == null) return null;
 
