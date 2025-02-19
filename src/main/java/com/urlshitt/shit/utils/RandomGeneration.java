@@ -8,7 +8,7 @@ import com.urlshitt.shit.models.URlMapping;
 public class RandomGeneration {
   private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom RANDOM = new SecureRandom();
-  public Long Generate() {
+  public Long Generate() { 
     Random random = new Random();
     Long min = 1000000000L;
     Long max = 9999999999L;
