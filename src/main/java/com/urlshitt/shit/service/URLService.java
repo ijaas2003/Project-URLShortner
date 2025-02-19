@@ -63,7 +63,7 @@ public class URLService {
       String urlId;
       Optional<URlMapping> URLmappingPojo = persistanceExecuter.getURlMapping(url);
       if (URLmappingPojo.isEmpty()) {
-        return null;
+        return null; 
       }
       else if (URLmappingPojo.isPresent()) {
         urlId  = URLmappingPojo.get().geturlId();
