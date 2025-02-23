@@ -32,7 +32,7 @@ public class URLController {
   }
 
   @GetMapping("/getallurl")
-  public ResponseEntity<List<URLPojo>> getAllPojo() {
+  public ResponseEntity<List<URLPojo>> getAllPojo() { 
     return new ResponseEntity<>(urlService.getAllUserData(), HttpStatus.OK);
   }
 
