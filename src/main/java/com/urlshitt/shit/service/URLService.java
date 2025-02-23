@@ -1,5 +1,6 @@
 package com.urlshitt.shit.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONException;
@@ -81,7 +82,7 @@ public class URLService {
     }
     
     return null;
-  }
+  }   
   public URLPojo getUrl(Long urlId) {
     if (urlId == null) return null;
 
@@ -93,5 +94,8 @@ public class URLService {
     } catch (Exception e) {
       return null;
     }
+  }
+  public List<URLPojo> getAllUserData() {
+    return persistanceExecuter.getAll();
   }
 }

@@ -1,5 +1,6 @@
 package com.urlshitt.shit.data;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class PersistanceExecuter {
   public PersistanceExecuter(DataAccessLayer dataAccessLayer, Mapping mapping) {
     this.dataAccessLayer = dataAccessLayer;
     this.mapping = mapping;
+  
   }
   
   public boolean verifyUrlExistInDB(String url) {
@@ -33,6 +35,11 @@ public class PersistanceExecuter {
   public Optional<URlMapping> getURlMapping(String url) {
     return mapping.findById(url);
   }
+
+  public List<URLPojo> getAll() {
+    return dataAccessLayer.findAll();
+  }
+
   public Optional<URLPojo> getUrl(Long urlId) {
     return dataAccessLayer.findById(urlId);
   }
